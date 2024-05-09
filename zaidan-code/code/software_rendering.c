@@ -26,15 +26,40 @@ draw_rect_in_pixels(int x0, int y0, int x1, int y1, u32 color) {
     
 }
 
-internal void
-draw_rect(v2 p, v2 half_size, u32 color) {
-    
+global_varible f32 scale = 0.01f; //@Hardcoded
+inline f32
+calculate_aspect_multipler(){
+    // @Cleanaup only needs to be done when size changes
     f32 aspect_multiplier = (f32)render_buffer.height;
     if ((f32)render_buffer.width / (f32)render_buffer.height < 1.77f)
         aspect_multiplier = (f32)render_buffer.width / 1.77f;
     
+    return aspect_multiplier;
+}
+
+internal v2 
+pixels_to_world(v2i pixels_coord){
+
+    f32 aspect_multiplier = calculate_aspect_multipler();
+
+    v2 result;
+    result.x = (f32)pixels_coord.x - (f32)render_buffer.width*.5f;
+    result.y = (f32)pixels_coord.y - (f32)render_buffer.height*.5f;
+
+    result.x /= aspect_multiplier;
+    result.x /= scale;
+
+    result.y /= aspect_multiplier;
+    result.y /= scale;
+
+    return result;
+}
+
+internal void
+draw_rect(v2 p, v2 half_size, u32 color) {
     
-    f32 scale = 0.01f;
+    f32 aspect_multiplier = calculate_aspect_multipler();
+    
     half_size.x *= aspect_multiplier * scale;
     half_size.y *= aspect_multiplier * scale;
     

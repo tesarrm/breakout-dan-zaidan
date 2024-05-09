@@ -24,9 +24,10 @@ simulate_game(Input *input, f32 dt) {
     if (is_down(BUTTON_UP)) player_p.y += speed*dt;
     
     clear_screen(0x551100);
-    draw_rect_in_pixels(input->mouse.x, input->mouse.y,
-                        input->mouse.x+20, input->mouse.y+20, 
-                        0xff0000);
+
+    v2 mouse_world = pixels_to_world(input->mouse);
+
+    draw_rect(mouse_world, (v2){1, 1}, 0xff0000);
     draw_rect(player_p, (v2){1, 1}, 0x00ff00);
     
 }
