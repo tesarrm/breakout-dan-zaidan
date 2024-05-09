@@ -88,6 +88,15 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     Input input = {0};
 
+    LARGE_INTEGER last_counter;
+    QueryPerformanceCounter(&last_counter);
+
+    LARGE_INTEGER frequency_counter_large;
+    QueryPerformanceFrequency(&frequency_counter_large);
+    f32 frequency_counter = (f32)frequency_counter_large.QuadPart;
+
+    f32 last_dt = 0.01666f;
+
     while (running) {
         // Input
         for (int i = 0; i < BUTTON_COUNT; i++) input.buttons[i].changed = false;
@@ -129,7 +138,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         }
 
         // Simulation
-        simulate_game(&input);
+        simulate_game(&input, last_dt);
 
         // Render
         StretchDIBits(hdc, 0, 0,
@@ -142,4 +151,15 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                       &render_buffer.bitmap_info,
                       DIB_RGB_COLORS, SRCCOPY);
     }
+
+    //Get the frame time
+    LARGE_INTEGER current_counter; 
+    QueryPerformanceCounter(&current_counter);
+
+    last_dt = 
+        (f32) 
+        (current_counter.QuadPart - last_counter.QuadPart)/ 
+            frequency_counter;
+
+    last_counter = current_counter;
 }
