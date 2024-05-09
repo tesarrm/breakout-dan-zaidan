@@ -19,6 +19,7 @@ global_varible Render_Buffer render_buffer;
 
 #include "software_rendering.c"
 #include "game.c"
+#include "collision.c"
 
 LRESULT CALLBACK
 window_callback (HWND window, UINT message, WPARAM w_param, LPARAM l_param

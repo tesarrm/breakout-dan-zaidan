@@ -1,4 +1,3 @@
-
 #include <stdint.h>
 
 typedef int8_t s8;
@@ -25,3 +24,5 @@ typedef int b32;
 #define internal static
 
 global_varible b32 running = true;
+
+#define array_count(a) (sizeof(a) / sizeof((a)[0]))

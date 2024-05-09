@@ -78,3 +78,34 @@ draw_rect(v2 p, v2 half_size, u32 color) {
     
     //Convert the units to pixel and call draw_rect_in_pixels
 }
+
+internal void
+clear_screen_and_draw_rect(v2 p, v2 half_size, u32 color, u32 clear_color) {
+
+    //@Review
+
+    f32 aspect_multiplier = calculate_aspect_multipler();
+    
+    half_size.x *= aspect_multiplier * scale;
+    half_size.y *= aspect_multiplier * scale;
+    
+    p.x *= aspect_multiplier * scale;
+    p.y *= aspect_multiplier * scale;
+    
+    p.x += (f32)render_buffer.width * .5f;
+    p.y += (f32)render_buffer.height * .5f;
+    
+    int x0 = (int)(p.x-half_size.x);
+    int y0 = (int)(p.y-half_size.y);
+    int x1 = (int)(p.x+half_size.x);
+    int y1 = (int)(p.y+half_size.y);
+    
+    draw_rect_in_pixels(x0, y0, x1, y1, color);
+
+    draw_rect_in_pixels(0, 0, x0, render_buffer.height, clear_color);
+    draw_rect_in_pixels(x1, 0, render_buffer.width, render_buffer.height, clear_color);
+
+    draw_rect_in_pixels(x0, 0, x1, y0, clear_color);
+    draw_rect_in_pixels(x0, y1, x1, render_buffer.height, clear_color);
+    
+}
