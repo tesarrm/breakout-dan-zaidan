@@ -34,12 +34,15 @@ v2 arena_half_size;
 
 b32 initialized = false;
 
+#include "collision.c"
+
 internal void
 simulate_game(Input *input, f32 dt) {
 
     if(!initialized){
         initialized = true;
         ball_dp.y = -30;
+        ball_p.x = 75;
         ball_p.y = 40;
         ball_half_size = (v2){.75, .75};
 
@@ -101,6 +104,7 @@ simulate_game(Input *input, f32 dt) {
     for(Block *block = blocks; block != blocks + array_count(blocks); block++){
         if(!block->life) continue;
 
+        do_block_vs_ball_collision(block, block_half_size, ball_p, ball_half_size);
         draw_rect(block->p, block_half_size, block->color);
     }
     
